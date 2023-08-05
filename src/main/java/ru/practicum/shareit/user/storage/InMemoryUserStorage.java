@@ -68,8 +68,8 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     private void emailValidation(String email) {
-        if (storage.values().stream().
-                anyMatch(user -> user.getEmail().equals(email))
+        if (storage.values().stream()
+                .anyMatch(user -> user.getEmail().equals(email))
         ) {
             throw new IllegalEmailException("Email не является уникальным email=" + email);
         }
