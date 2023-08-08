@@ -1,10 +1,13 @@
 package ru.practicum.shareit.item.dto;
 
-import lombok.experimental.UtilityClass;
 import ru.practicum.shareit.item.model.Item;
 
-@UtilityClass
 public class ItemMapper {
+
+    private ItemMapper() {
+        throw new IllegalStateException("Утилити класс не может иметь экземпляр");
+    }
+
     public static ItemDto itemToDto(Item item) {
         return ItemDto.builder()
                 .id(item.getId())

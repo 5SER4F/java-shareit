@@ -13,7 +13,7 @@ import java.util.Map;
 @Component
 public class InMemoryUserStorage implements UserStorage {
     private final Map<Long, User> storage = new HashMap<>();
-    private long idCounter;
+    private long idCounter = 0;
 
     @Override
     public User addUser(User user) {
