@@ -37,7 +37,7 @@ public class ItemMapper {
         itemDto.setLastBooking(BookingMapper.modelToSendDtoForItemDto(item.getLastBooking()));
         itemDto.setNextBooking(BookingMapper.modelToSendDtoForItemDto(item.getNextBooking()));
         itemDto.setComments(item.getComments() != null ? item.getComments().stream()
-                .map(CommentMapper::ModelToDto)
+                .map(CommentMapper::modelToDto)
                 .collect(Collectors.toList()) : Collections.emptyList());
 
         return itemDto;

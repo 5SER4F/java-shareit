@@ -46,9 +46,9 @@ public class BookingController {
     }
 
     @GetMapping
-    ResponseEntity<List<BookingSendDto>> getAllByBookerWithState
-            (@RequestParam(name = "state", required = false, defaultValue = "ALL") String state,
-             @RequestHeader("X-Sharer-User-Id") @NotNull Long requesterId) {
+    ResponseEntity<List<BookingSendDto>> getAllByBookerWithState(@RequestParam(name = "state", required = false, defaultValue = "ALL")
+                                                                 String state,
+                                                                 @RequestHeader("X-Sharer-User-Id") @NotNull Long requesterId) {
         return new ResponseEntity<>(service.getAllByBookerWithState(requesterId, state).stream()
                 .map(BookingMapper::modelToSendDto)
                 .collect(Collectors.toList()),
@@ -56,9 +56,9 @@ public class BookingController {
     }
 
     @GetMapping("/owner")
-    ResponseEntity<List<BookingSendDto>> getAllByItemOwnerWithState
-            (@RequestParam(name = "state", required = false, defaultValue = "ALL") String state,
-             @RequestHeader("X-Sharer-User-Id") @NotNull Long requesterId) {
+    ResponseEntity<List<BookingSendDto>> getAllByItemOwnerWithState(@RequestParam(name = "state", required = false, defaultValue = "ALL")
+                                                                    String state,
+                                                                    @RequestHeader("X-Sharer-User-Id") @NotNull Long requesterId) {
         return new ResponseEntity<>(service.getAllByItemOwnerWithState(requesterId, state).stream()
                 .map(BookingMapper::modelToSendDto)
                 .collect(Collectors.toList()),

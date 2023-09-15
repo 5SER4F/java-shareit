@@ -67,7 +67,7 @@ public class ItemController {
     ResponseEntity<CommentDto> addComment(@RequestHeader("X-Sharer-User-Id") @NotNull Long requesterId,
                                           @PathVariable("itemId") Long itemId,
                                           @RequestBody Map<String, String> text) {
-        return new ResponseEntity<>(CommentMapper.ModelToDto(service.addComment(requesterId, itemId, text)),
+        return new ResponseEntity<>(CommentMapper.modelToDto(service.addComment(requesterId, itemId, text)),
                 HttpStatus.OK);
     }
 }

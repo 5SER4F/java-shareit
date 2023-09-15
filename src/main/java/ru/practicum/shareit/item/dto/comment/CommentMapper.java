@@ -7,7 +7,7 @@ public class CommentMapper {
         throw new IllegalStateException("Утилити класс не может иметь экземпляр");
     }
 
-    public static CommentDto ModelToDto(Comment comment) {
+    public static CommentDto modelToDto(Comment comment) {
         return CommentDto.builder()
                 .id(comment.getId())
                 .text(comment.getText())

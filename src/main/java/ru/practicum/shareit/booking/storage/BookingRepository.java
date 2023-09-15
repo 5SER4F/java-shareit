@@ -1,6 +1,5 @@
 package ru.practicum.shareit.booking.storage;
 
-import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import ru.practicum.shareit.booking.model.Booking;
@@ -20,9 +19,6 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     )
     List<Booking> findByItemOwner(Long itemOwnerId);
 
-//    List<Booking> findByItemId(Long itemId);
-
-//    @EntityGraph(attributePaths = {"item", "booker"})
-    boolean existsByItemIdAndBookerIdAndEndBefore(Long itemId, Long BookerId, Timestamp date);
+    boolean existsByItemIdAndBookerIdAndEndBefore(Long itemId, Long bookerId, Timestamp date);
 
 }
