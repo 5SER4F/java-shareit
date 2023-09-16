@@ -1,11 +1,10 @@
 package ru.practicum.shareit.item.dto.comment;
 
+import lombok.experimental.UtilityClass;
 import ru.practicum.shareit.item.model.comment.Comment;
 
+@UtilityClass
 public class CommentMapper {
-    private CommentMapper() {
-        throw new IllegalStateException("Утилити класс не может иметь экземпляр");
-    }
 
     public static CommentDto modelToDto(Comment comment) {
         return CommentDto.builder()

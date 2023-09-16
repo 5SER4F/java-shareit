@@ -133,7 +133,7 @@ public class BookingServiceImpl implements BookingService {
 
     }
 
-    private Timestamp now() {
+    private static Timestamp now() {
         return Timestamp.from(Instant.now());
     }
 }

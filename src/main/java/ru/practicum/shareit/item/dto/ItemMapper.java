@@ -1,5 +1,6 @@
 package ru.practicum.shareit.item.dto;
 
+import lombok.experimental.UtilityClass;
 import ru.practicum.shareit.booking.dto.BookingMapper;
 import ru.practicum.shareit.item.dto.comment.CommentMapper;
 import ru.practicum.shareit.item.model.Item;
@@ -7,12 +8,8 @@ import ru.practicum.shareit.item.model.Item;
 import java.util.Collections;
 import java.util.stream.Collectors;
 
+@UtilityClass
 public class ItemMapper {
-
-    private ItemMapper() {
-        throw new IllegalStateException("Утилити класс не может иметь экземпляр");
-    }
-
     public static ItemDto itemToDto(Item item) {
         return ItemDto.builder()
                 .id(item.getId())

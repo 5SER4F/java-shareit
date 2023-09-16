@@ -1,15 +1,14 @@
 package ru.practicum.shareit.booking.dto;
 
+import lombok.experimental.UtilityClass;
 import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.booking.model.Status;
 import ru.practicum.shareit.item.dto.ItemMapper;
 
 import java.sql.Timestamp;
 
+@UtilityClass
 public class BookingMapper {
-    private BookingMapper() {
-        throw new IllegalStateException("Утилити класс");
-    }
 
     public static Booking receiveDtoToModel(BookingReceiveDto b) {
         return Booking.builder()

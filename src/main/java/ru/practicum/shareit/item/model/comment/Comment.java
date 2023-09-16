@@ -3,6 +3,7 @@ package ru.practicum.shareit.item.model.comment;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
@@ -12,6 +13,7 @@ import java.sql.Timestamp;
 @Table(name = "comments")
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class Comment {
     @Id
@@ -33,7 +35,4 @@ public class Comment {
 
     @Column(name = "created", nullable = false)
     private Timestamp created;
-
-    public Comment() {
-    }
 }

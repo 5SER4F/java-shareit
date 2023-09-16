@@ -3,6 +3,7 @@ package ru.practicum.shareit.item.model;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.item.model.comment.Comment;
 
@@ -13,6 +14,7 @@ import java.util.List;
 @Table(name = "items")
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class Item {
     @Id
@@ -43,8 +45,5 @@ public class Item {
 
     public Boolean isAvailable() {
         return available;
-    }
-
-    public Item() {
     }
 }
