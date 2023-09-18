@@ -6,14 +6,20 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.ItemMapper;
+import ru.practicum.shareit.item.dto.comment.CommentDto;
+import ru.practicum.shareit.item.dto.comment.CommentMapper;
+import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.service.ItemService;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static ru.practicum.shareit.item.dto.ItemMapper.itemToDto;
+import static ru.practicum.shareit.item.dto.ItemMapper.itemToDtoWithBooking;
 
 @RestController
 @RequestMapping("/items")
@@ -35,14 +41,16 @@ public class ItemController {
     }
 
     @GetMapping("/{itemId}")
-    ResponseEntity<ItemDto> getItemById(@PathVariable("itemId") Long itemId) {
-        return new ResponseEntity<>(itemToDto(service.getItemById(itemId)), HttpStatus.OK);
+    ResponseEntity<ItemDto> getItemById(@RequestHeader("X-Sharer-User-Id") @NotNull Long requesterId,
+                                        @PathVariable("itemId") Long itemId) {
+        return new ResponseEntity<>(itemToDtoWithBooking(service.getItemById(itemId, requesterId)), HttpStatus.OK);
     }
 
     @GetMapping
     ResponseEntity<List<ItemDto>> getAllUserItem(@RequestHeader("X-Sharer-User-Id") Long ownerId) {
         List<ItemDto> userItems = service.getAllUserItem(ownerId).stream()
-                .map(ItemMapper::itemToDto)
+                .sorted(Comparator.comparingLong(Item::getId))
+                .map(ItemMapper::itemToDtoWithBooking)
                 .collect(Collectors.toList());
         return new ResponseEntity<>(userItems, HttpStatus.OK);
     }
@@ -53,5 +61,13 @@ public class ItemController {
                 .map(ItemMapper::itemToDto)
                 .collect(Collectors.toList());
         return new ResponseEntity<>(items, HttpStatus.OK);
+    }
+
+    @PostMapping("/{itemId}/comment")
+    ResponseEntity<CommentDto> addComment(@RequestHeader("X-Sharer-User-Id") @NotNull Long requesterId,
+                                          @PathVariable("itemId") Long itemId,
+                                          @RequestBody Map<String, String> text) {
+        return new ResponseEntity<>(CommentMapper.modelToDto(service.addComment(requesterId, itemId, text)),
+                HttpStatus.OK);
     }
 }
