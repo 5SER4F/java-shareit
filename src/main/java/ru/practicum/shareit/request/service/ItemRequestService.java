@@ -1,13 +1,16 @@
 package ru.practicum.shareit.request.service;
 
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import ru.practicum.shareit.request.model.ItemRequest;
 
-import javax.validation.constraints.NotNull;
+import java.util.List;
 import java.util.Map;
 
-public interface RequestService {
+public interface ItemRequestService {
     ItemRequest addPost(Long requesterId, Map<String, String> requestContent);
 
+    List<ItemRequest> getAllUserRequests(Long requesterId);
+
+    List<ItemRequest> getAllPageable(Long requesterId, int from, int size);
+
+    ItemRequest getById(Long requesterId, Long requestId);
 }

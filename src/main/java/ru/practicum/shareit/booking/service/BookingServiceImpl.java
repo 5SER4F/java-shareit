@@ -1,6 +1,8 @@
 package ru.practicum.shareit.booking.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.booking.dto.BookingMapper;
@@ -93,7 +95,7 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     @Transactional
-    public List<Booking> getAllByBookerWithState(Long requesterId, String state) {
+    public List<Booking> getAllByBookerWithState(Long requesterId, String state, int from, int size) {
         if (!states.containsKey(state.toUpperCase())) {
             throw new FailedBookingException("Unknown state: UNSUPPORTED_STATUS");
         }
@@ -101,14 +103,15 @@ public class BookingServiceImpl implements BookingService {
             throw new ResourceNotFoundException("Запрос бронирований несуществующего пользователя id="
                     + requesterId);
         }
-        return bookingRepository.findByBookerIdOrderByStartDesc(requesterId).stream()
+        Pageable pageable = PageRequest.of(from / size, size);
+        return bookingRepository.findByBookerIdOrderByStartDesc(requesterId, pageable).stream()
                 .filter(states.get(state.toUpperCase()))
                 .collect(Collectors.toList());
     }
 
     @Override
     @Transactional
-    public List<Booking> getAllByItemOwnerWithState(Long itemOwnerId, String state) {
+    public List<Booking> getAllByItemOwnerWithState(Long itemOwnerId, String state, int from, int size) {
         if (!states.containsKey(state.toUpperCase())) {
             throw new FailedBookingException("Unknown state: UNSUPPORTED_STATUS");
         }
@@ -116,7 +119,8 @@ public class BookingServiceImpl implements BookingService {
             throw new ResourceNotFoundException("Запрос бронирований несуществующего владельца id="
                     + itemOwnerId);
         }
-        return bookingRepository.findByItemOwner(itemOwnerId).stream()
+        Pageable pageable = PageRequest.of(from, size);
+        return bookingRepository.findAllByItemOwnerIdOrderByStartDesc(itemOwnerId, pageable).stream()
                 .filter(states.get(state.toUpperCase()))
                 .collect(Collectors.toList());
     }
