@@ -10,10 +10,8 @@ import ru.practicum.shareit.request.dto.ItemRequestSendDto;
 import ru.practicum.shareit.request.service.ItemRequestService;
 
 import javax.validation.constraints.NotNull;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static ru.practicum.shareit.request.dto.ItemRequestMapper.modelToSendDto;
@@ -48,19 +46,15 @@ public class ItemRequestController {
     ResponseEntity<List<ItemRequestSendDto>> getAllPageable(@RequestHeader("X-Sharer-User-Id")
                                                             @NotNull Long requesterId,
                                                             @RequestParam(value = "from",
-                                                                    required = false)
-                                                            Optional<Integer> from,
+                                                                    defaultValue = "0")
+                                                            int from,
                                                             @RequestParam(value = "size",
-                                                                    required = false)
-                                                            Optional<Integer> size) {
-        if (from.isEmpty() || size.isEmpty()) {
-            return new ResponseEntity<>(Collections.emptyList(), HttpStatus.OK);
-        }
-        if (from.get() < 0 || size.get() < 0
-                || (from.get() == 0 & size.get() == 0)) {
+                                                                    defaultValue = "30")
+                                                            int size) {
+        if (from < 0 || size <= 0) {
             throw new BadRequestException("Некорректные параметры запроса");
         }
-        return new ResponseEntity<>(service.getAllPageable(requesterId, from.get(), size.get()).stream()
+        return new ResponseEntity<>(service.getAllPageable(requesterId, from, size).stream()
                 .map(ItemRequestMapper::modelToSendDto)
                 .collect(Collectors.toList()), HttpStatus.OK);
     }
