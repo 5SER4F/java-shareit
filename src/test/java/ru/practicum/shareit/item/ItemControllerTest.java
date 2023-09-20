@@ -30,7 +30,6 @@ import ru.practicum.shareit.user.storage.UserRepository;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
