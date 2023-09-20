@@ -11,6 +11,9 @@ import java.sql.Timestamp;
 public class BookingMapper {
 
     public static Booking receiveDtoToModel(BookingReceiveDto b) {
+        if (b == null) {
+            return null;
+        }
         return Booking.builder()
                 .start(Timestamp.valueOf(b.getStart()))
                 .end(Timestamp.valueOf(b.getEnd()))
@@ -19,6 +22,9 @@ public class BookingMapper {
     }
 
     public static BookingSendDto modelToSendDto(Booking b) {
+        if (b == null) {
+            return null;
+        }
         return BookingSendDto.builder()
                 .id(b.getId())
                 .start(b.getStart().toLocalDateTime())
