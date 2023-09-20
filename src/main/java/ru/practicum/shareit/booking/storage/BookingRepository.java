@@ -1,6 +1,5 @@
 package ru.practicum.shareit.booking.storage;
 
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -17,7 +16,7 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
             "WHERE b.item.ownerId=?1 " +
             "ORDER BY b.start DESC ";
 
-    Page<Booking> findByBookerIdOrderByStartDesc(Long bookerId, Pageable pageable);
+    List<Booking> findByBookerIdOrderByStartDesc(Long bookerId, Pageable pageable);
 
     @Query(QUERY_BY_ITEM_OWNER)
     List<Booking> findByItemOwner(Long itemOwnerId);

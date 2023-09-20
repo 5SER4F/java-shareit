@@ -20,10 +20,8 @@ import ru.practicum.shareit.user.User;
 import ru.practicum.shareit.user.storage.UserRepository;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.time.Instant;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -711,14 +709,14 @@ class ItemServiceImplTest {
     }
 
     @Test
-    void testFindByTextQuery2() {
+    void testFindByTextQueryEmpty() {
         when(itemRepository.findByNameOrDescriptionContainingIgnoreCaseAndAvailableTrue((String) any(), (String) any()))
                 .thenReturn(new ArrayList<>());
         assertTrue(itemServiceImpl.findByTextQuery("").isEmpty());
     }
 
     @Test
-    void testFindByTextQuery3() {
+    void testFindByTextQueryResourceNotFoundException() {
         when(itemRepository.findByNameOrDescriptionContainingIgnoreCaseAndAvailableTrue((String) any(), (String) any()))
                 .thenThrow(new ResourceNotFoundException("error"));
         assertThrows(ResourceNotFoundException.class, () -> itemServiceImpl.findByTextQuery("Query"));
@@ -729,6 +727,45 @@ class ItemServiceImplTest {
     @Test
     void testAddComment() {
         assertThrows(FailedCommentException.class, () -> itemServiceImpl.addComment(1L, 1L, new HashMap<>()));
+    }
+
+    @Test
+    void addCommentSecFailedCommentException() {
+        when(bookingRepository.existsByItemIdAndBookerIdAndEndBefore(any(), any(), any())).thenReturn(false);
+        assertThrows(FailedCommentException.class, () -> itemServiceImpl.addComment(1L,
+                1L, Map.of("text", "text")));
+    }
+
+    @Test
+    void addComment_ValidParameters_ReturnsComment() {
+        Long requesterId = 1L;
+        Long itemId = 2L;
+        Map<String, String> text = new HashMap<>();
+        text.put("text", "This is a comment");
+
+        when(bookingRepository.existsByItemIdAndBookerIdAndEndBefore(any(), any(), any()))
+                .thenReturn(true);
+
+        Comment comment = new Comment();
+        comment.setId(3L);
+        comment.setAuthorId(requesterId);
+        comment.setItemId(itemId);
+        comment.setText(text.get("text"));
+        comment.setCreated(Timestamp.from(Instant.now()));
+        User user = new User();
+        user.setName("John");
+        when(commentRepository.save(any(Comment.class))).thenReturn(comment);
+        when(userRepository.findById(requesterId)).thenReturn(Optional.of(user));
+
+        Comment result = itemServiceImpl.addComment(requesterId, itemId, text);
+
+        assertNotNull(result);
+        assertEquals(comment.getId(), result.getId());
+        assertEquals(comment.getAuthorId(), result.getAuthorId());
+        assertEquals(comment.getItemId(), result.getItemId());
+        assertEquals(comment.getText(), result.getText());
+        assertEquals(comment.getCreated(), result.getCreated());
+        assertEquals(user.getName(), result.getAuthorName());
     }
 }
 
