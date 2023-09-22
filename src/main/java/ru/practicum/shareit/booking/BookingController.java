@@ -8,6 +8,7 @@ import ru.practicum.shareit.booking.dto.BookingMapper;
 import ru.practicum.shareit.booking.dto.BookingReceiveDto;
 import ru.practicum.shareit.booking.dto.BookingSendDto;
 import ru.practicum.shareit.booking.service.BookingService;
+import ru.practicum.shareit.exception.exceptions.BadRequestException;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -46,20 +47,39 @@ public class BookingController {
     }
 
     @GetMapping
-    ResponseEntity<List<BookingSendDto>> getAllByBookerWithState(@RequestParam(name = "state", required = false, defaultValue = "ALL")
+    ResponseEntity<List<BookingSendDto>> getAllByBookerWithState(@RequestHeader("X-Sharer-User-Id") @NotNull
+                                                                 Long requesterId,
+                                                                 @RequestParam(name = "state", defaultValue = "ALL")
                                                                  String state,
-                                                                 @RequestHeader("X-Sharer-User-Id") @NotNull Long requesterId) {
-        return new ResponseEntity<>(service.getAllByBookerWithState(requesterId, state).stream()
+                                                                 @RequestParam(value = "from",
+                                                                         defaultValue = "0")
+                                                                 int from,
+                                                                 @RequestParam(value = "size",
+                                                                         defaultValue = "25")
+                                                                 int size) {
+        if (from < 0 || size <= 0) {
+            throw new BadRequestException("Некорректные параметры запроса");
+        }
+        return new ResponseEntity<>(service.getAllByBookerWithState(requesterId, state, from, size).stream()
                 .map(BookingMapper::modelToSendDto)
                 .collect(Collectors.toList()),
                 HttpStatus.OK);
     }
 
     @GetMapping("/owner")
-    ResponseEntity<List<BookingSendDto>> getAllByItemOwnerWithState(@RequestParam(name = "state", required = false, defaultValue = "ALL")
+    ResponseEntity<List<BookingSendDto>> getAllByItemOwnerWithState(@RequestParam(name = "state", defaultValue = "ALL")
                                                                     String state,
-                                                                    @RequestHeader("X-Sharer-User-Id") @NotNull Long requesterId) {
-        return new ResponseEntity<>(service.getAllByItemOwnerWithState(requesterId, state).stream()
+                                                                    @RequestHeader("X-Sharer-User-Id") @NotNull Long requesterId,
+                                                                    @RequestParam(value = "from",
+                                                                            defaultValue = "0")
+                                                                    int from,
+                                                                    @RequestParam(value = "size",
+                                                                            defaultValue = "30")
+                                                                    int size) {
+        if (from < 0 || size <= 0) {
+            throw new BadRequestException("Некорректные параметры запроса");
+        }
+        return new ResponseEntity<>(service.getAllByItemOwnerWithState(requesterId, state, from, size).stream()
                 .map(BookingMapper::modelToSendDto)
                 .collect(Collectors.toList()),
                 HttpStatus.OK);

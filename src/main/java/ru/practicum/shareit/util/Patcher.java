@@ -2,7 +2,7 @@ package ru.practicum.shareit.util;
 
 import java.util.function.Consumer;
 
-public class Patcher {
+public final class Patcher {
 
     private Patcher() {
         throw new IllegalStateException("Утилити класс не может иметь экземпляр");

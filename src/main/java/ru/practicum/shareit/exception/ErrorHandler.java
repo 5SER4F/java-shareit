@@ -17,7 +17,8 @@ public class ErrorHandler {
         return Map.of("Запрошенный ресурс не существует", e.getMessage());
     }
 
-    @ExceptionHandler({FailedBookingException.class, FailedCommentException.class})
+    @ExceptionHandler({FailedBookingException.class, FailedCommentException.class, FailedItemRequestException.class,
+            BadRequestException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Map<String, String> handleFailedBookingException(final RuntimeException e) {
         return Map.of("error", e.getMessage());
