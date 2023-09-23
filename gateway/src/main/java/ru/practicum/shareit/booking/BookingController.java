@@ -20,8 +20,6 @@ public class BookingController {
     public ResponseEntity<Object> postBooking(@RequestHeader("X-Sharer-User-Id") @NotNull Long bookerId,
                                               @RequestBody @Valid BookingReceiveDto bookingReceiveDto) {
         return bookingClient.bookItem(bookerId, bookingReceiveDto);
-//        return new ResponseEntity<>(modelToSendDto(service.postBooking(bookerId, bookingReceiveDto)),
-//                HttpStatus.CREATED);
     }
 
     @PatchMapping("/{bookingId}")
@@ -29,16 +27,12 @@ public class BookingController {
                                                  @RequestParam("approved") Boolean isApproved,
                                                  @RequestHeader("X-Sharer-User-Id") @NotNull Long ownerId) {
         return bookingClient.approveBooking(ownerId, bookingId, isApproved);
-//        return new ResponseEntity<>(modelToSendDto(service.approveBooking(bookingId, ownerId, isApproved)),
-//                HttpStatus.OK);
     }
 
     @GetMapping("/{bookingId}")
     public ResponseEntity<Object> getBooking(@PathVariable Long bookingId,
                                              @RequestHeader("X-Sharer-User-Id") @NotNull Long requesterId) {
         return bookingClient.getBooking(requesterId, bookingId);
-//        return new ResponseEntity<>(modelToSendDto(service.getBooking(bookingId, requesterId)),
-//                HttpStatus.OK);
     }
 
     @GetMapping
