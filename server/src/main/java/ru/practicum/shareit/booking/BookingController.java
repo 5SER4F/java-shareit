@@ -25,38 +25,38 @@ public class BookingController {
     private final BookingService service;
 
     @PostMapping
-    ResponseEntity<BookingSendDto> postBooking(@RequestHeader("X-Sharer-User-Id") @NotNull Long bookerId,
-                                               @RequestBody @Valid BookingReceiveDto bookingReceiveDto) {
+    public ResponseEntity<BookingSendDto> postBooking(@RequestHeader("X-Sharer-User-Id") @NotNull Long bookerId,
+                                                      @RequestBody @Valid BookingReceiveDto bookingReceiveDto) {
         return new ResponseEntity<>(modelToSendDto(service.postBooking(bookerId, bookingReceiveDto)),
                 HttpStatus.CREATED);
     }
 
     @PatchMapping("/{bookingId}")
-    ResponseEntity<BookingSendDto> approveBooking(@PathVariable("bookingId") Long bookingId,
-                                                  @RequestParam("approved") Boolean isApproved,
-                                                  @RequestHeader("X-Sharer-User-Id") @NotNull Long ownerId) {
+    public ResponseEntity<BookingSendDto> approveBooking(@PathVariable("bookingId") Long bookingId,
+                                                         @RequestParam("approved") Boolean isApproved,
+                                                         @RequestHeader("X-Sharer-User-Id") @NotNull Long ownerId) {
         return new ResponseEntity<>(modelToSendDto(service.approveBooking(bookingId, ownerId, isApproved)),
                 HttpStatus.OK);
     }
 
     @GetMapping("/{bookingId}")
-    ResponseEntity<BookingSendDto> getBooking(@PathVariable Long bookingId,
-                                              @RequestHeader("X-Sharer-User-Id") @NotNull Long requesterId) {
+    public ResponseEntity<BookingSendDto> getBooking(@PathVariable Long bookingId,
+                                                     @RequestHeader("X-Sharer-User-Id") @NotNull Long requesterId) {
         return new ResponseEntity<>(modelToSendDto(service.getBooking(bookingId, requesterId)),
                 HttpStatus.OK);
     }
 
     @GetMapping
-    ResponseEntity<List<BookingSendDto>> getAllByBookerWithState(@RequestHeader("X-Sharer-User-Id") @NotNull
-                                                                 Long requesterId,
-                                                                 @RequestParam(name = "state", defaultValue = "ALL")
-                                                                 String state,
-                                                                 @RequestParam(value = "from",
-                                                                         defaultValue = "0")
-                                                                 int from,
-                                                                 @RequestParam(value = "size",
-                                                                         defaultValue = "25")
-                                                                 int size) {
+    public ResponseEntity<List<BookingSendDto>> getAllByBookerWithState(@RequestHeader("X-Sharer-User-Id") @NotNull
+                                                                        Long requesterId,
+                                                                        @RequestParam(name = "state", defaultValue = "ALL")
+                                                                        String state,
+                                                                        @RequestParam(value = "from",
+                                                                                defaultValue = "0")
+                                                                        int from,
+                                                                        @RequestParam(value = "size",
+                                                                                defaultValue = "25")
+                                                                        int size) {
         if (from < 0 || size <= 0) {
             throw new BadRequestException("Некорректные параметры запроса");
         }
@@ -67,15 +67,15 @@ public class BookingController {
     }
 
     @GetMapping("/owner")
-    ResponseEntity<List<BookingSendDto>> getAllByItemOwnerWithState(@RequestParam(name = "state", defaultValue = "ALL")
-                                                                    String state,
-                                                                    @RequestHeader("X-Sharer-User-Id") @NotNull Long requesterId,
-                                                                    @RequestParam(value = "from",
-                                                                            defaultValue = "0")
-                                                                    int from,
-                                                                    @RequestParam(value = "size",
-                                                                            defaultValue = "30")
-                                                                    int size) {
+    public ResponseEntity<List<BookingSendDto>> getAllByItemOwnerWithState(@RequestParam(name = "state", defaultValue = "ALL")
+                                                                           String state,
+                                                                           @RequestHeader("X-Sharer-User-Id") @NotNull Long requesterId,
+                                                                           @RequestParam(value = "from",
+                                                                                   defaultValue = "0")
+                                                                           int from,
+                                                                           @RequestParam(value = "size",
+                                                                                   defaultValue = "30")
+                                                                           int size) {
         if (from < 0 || size <= 0) {
             throw new BadRequestException("Некорректные параметры запроса");
         }

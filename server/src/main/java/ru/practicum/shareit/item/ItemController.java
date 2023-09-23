@@ -28,26 +28,26 @@ public class ItemController {
     private final ItemService service;
 
     @PostMapping
-    ResponseEntity<ItemDto> addItem(@RequestHeader("X-Sharer-User-Id") @NotNull Long ownerId,
-                                    @RequestBody @Valid ItemDto itemDto) {
+    public ResponseEntity<ItemDto> addItem(@RequestHeader("X-Sharer-User-Id") @NotNull Long ownerId,
+                                           @RequestBody @Valid ItemDto itemDto) {
         return new ResponseEntity<>(itemToDto(service.addItem(ownerId, itemDto)), HttpStatus.CREATED);
     }
 
     @PatchMapping("/{itemId}")
-    ResponseEntity<ItemDto> patchItem(@RequestHeader("X-Sharer-User-Id") @NotNull Long ownerId,
-                                      @PathVariable("itemId") Long itemId,
-                                      @RequestBody ItemDto itemDto) {
+    public ResponseEntity<ItemDto> patchItem(@RequestHeader("X-Sharer-User-Id") @NotNull Long ownerId,
+                                             @PathVariable("itemId") Long itemId,
+                                             @RequestBody ItemDto itemDto) {
         return new ResponseEntity<>(itemToDto(service.patchItem(ownerId, itemId, itemDto)), HttpStatus.OK);
     }
 
     @GetMapping("/{itemId}")
-    ResponseEntity<ItemDto> getItemById(@RequestHeader("X-Sharer-User-Id") @NotNull Long requesterId,
-                                        @PathVariable("itemId") Long itemId) {
+    public ResponseEntity<ItemDto> getItemById(@RequestHeader("X-Sharer-User-Id") @NotNull Long requesterId,
+                                               @PathVariable("itemId") Long itemId) {
         return new ResponseEntity<>(itemToDtoWithBooking(service.getItemById(itemId, requesterId)), HttpStatus.OK);
     }
 
     @GetMapping
-    ResponseEntity<List<ItemDto>> getAllUserItem(@RequestHeader("X-Sharer-User-Id") Long ownerId) {
+    public ResponseEntity<List<ItemDto>> getAllUserItem(@RequestHeader("X-Sharer-User-Id") Long ownerId) {
         List<ItemDto> userItems = service.getAllUserItem(ownerId).stream()
                 .sorted(Comparator.comparingLong(Item::getId))
                 .map(ItemMapper::itemToDtoWithBooking)
@@ -56,7 +56,7 @@ public class ItemController {
     }
 
     @GetMapping("/search")
-    ResponseEntity<List<ItemDto>> findByTextQuery(@RequestParam("text") String query) {
+    public ResponseEntity<List<ItemDto>> findByTextQuery(@RequestParam("text") String query) {
         List<ItemDto> items = service.findByTextQuery(query).stream()
                 .map(ItemMapper::itemToDto)
                 .collect(Collectors.toList());
@@ -64,9 +64,9 @@ public class ItemController {
     }
 
     @PostMapping("/{itemId}/comment")
-    ResponseEntity<CommentDto> addComment(@RequestHeader("X-Sharer-User-Id") @NotNull Long requesterId,
-                                          @PathVariable("itemId") Long itemId,
-                                          @RequestBody Map<String, String> text) {
+    public ResponseEntity<CommentDto> addComment(@RequestHeader("X-Sharer-User-Id") @NotNull Long requesterId,
+                                                 @PathVariable("itemId") Long itemId,
+                                                 @RequestBody Map<String, String> text) {
         return new ResponseEntity<>(CommentMapper.modelToDto(service.addComment(requesterId, itemId, text)),
                 HttpStatus.OK);
     }
