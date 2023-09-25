@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 class BookingMapperTest {
 
     @Test
-    void modelToSendDtoForItemDto_ValidBooking_ReturnsBookingSendDto() {
+    public void testModelToSendDtoForItemDto_ValidBooking_ReturnsBookingSendDto() {
         Booking booking = new Booking();
         booking.setId(1L);
 
@@ -20,6 +20,8 @@ class BookingMapperTest {
         booking.setBooker(booker);
 
         BookingSendDto result = BookingMapper.modelToSendDtoForItemDto(booking);
+
+        System.out.println("Assert result = " + result + "\n booking = " + booking);
 
         assertEquals(booking.getId(), result.getId());
         assertEquals(booking.getBooker().getId(), result.getBookerId());

@@ -44,7 +44,7 @@ class BookingServiceImplValidTest {
     private BookingServiceImpl bookingService;
 
     @Test
-    void getAllByItemOwnerWithStateNonExistingOwnerThrowsResourceNotFoundException() {
+    public void testGetAllByItemOwnerWithStateNonExistingOwnerThrowsResourceNotFoundException() {
         Long itemOwnerId = 1L;
         String state = "CURRENT";
         int from = 0;
@@ -58,7 +58,7 @@ class BookingServiceImplValidTest {
     }
 
     @Test
-    void getAllByItemOwnerWithStateValidParametersReturnsListOfBookings() {
+    public void testGetAllByItemOwnerWithStateValidParametersReturnsListOfBookings() {
         Long itemOwnerId = 1L;
         String state = "ALL";
         int from = 0;
@@ -84,7 +84,7 @@ class BookingServiceImplValidTest {
     }
 
     @Test
-    void getAllByBookerWithStateNonExistingUserThrowsResourceNotFoundException() {
+    public void testGetAllByBookerWithStateNonExistingUserThrowsResourceNotFoundException() {
         Long requesterId = 1L;
         String state = "CURRENT";
         int from = 0;
@@ -97,7 +97,7 @@ class BookingServiceImplValidTest {
     }
 
     @Test
-    void getAllByBookerWithStateValidParametersReturnsListOfBookings() {
+    public void testGetAllByBookerWithStateValidParametersReturnsListOfBookings() {
         Long requesterId = 1L;
         String state = "ALL";
         int from = 0;
@@ -120,7 +120,7 @@ class BookingServiceImplValidTest {
     }
 
     @Test
-    void postBookingFrstResourceNotFoundException() {
+    public void testPostBookingFrstResourceNotFoundException() {
         when((itemRepository.findById(any(Long.class)))).thenReturn(Optional.empty());
         BookingReceiveDto bookingReceiveDto = new BookingReceiveDto();
         bookingReceiveDto.setItemId(1L);
@@ -130,7 +130,7 @@ class BookingServiceImplValidTest {
     }
 
     @Test
-    void postBookingScndResourceNotFoundException() {
+    public void testPostBookingScndResourceNotFoundException() {
         Item item = new Item();
         item.setAvailable(true);
         when((itemRepository.findById(any(Long.class)))).thenReturn(Optional.of(item));
@@ -148,7 +148,7 @@ class BookingServiceImplValidTest {
     }
 
     @Test
-    void postBookingSelfBookingException() {
+    public void testPostBookingSelfBookingException() {
         Item itemToBook = new Item();
         itemToBook.setAvailable(true);
         itemToBook.setOwnerId(1L);
@@ -168,7 +168,7 @@ class BookingServiceImplValidTest {
     }
 
     @Test
-    void getBookingNonExistingBookingThrowsResourceNotFoundException() {
+    public void testGetBookingNonExistingBookingThrowsResourceNotFoundException() {
         Long bookingId = 1L;
         Long requesterId = 2L;
 
@@ -179,7 +179,7 @@ class BookingServiceImplValidTest {
     }
 
     @Test
-    void getBookingUnauthorizedRequestThrowsResourceNotFoundException() {
+    public void testGetBookingUnauthorizedRequestThrowsResourceNotFoundException() {
         Long bookingId = 1L;
         Long requesterId = 2L;
         Booking booking = new Booking();
@@ -199,7 +199,7 @@ class BookingServiceImplValidTest {
     }
 
     @Test
-    void postBookingValidBookingReceiveDtoReturnsBooking() {
+    public void testPostBookingValidBookingReceiveDtoReturnsBooking() {
         Long bookerId = 2L;
         BookingReceiveDto bookingReceiveDto = new BookingReceiveDto();
         bookingReceiveDto.setItemId(1L);
@@ -230,7 +230,7 @@ class BookingServiceImplValidTest {
 
 
     @Test
-    void approveBookingNotOwnerThrowsNotOwnerException() {
+    public void testApproveBookingNotOwnerThrowsNotOwnerException() {
         Long bookingId = 1L;
         Long ownerId = 2L;
         Boolean isApproved = true;
@@ -248,7 +248,7 @@ class BookingServiceImplValidTest {
     }
 
     @Test
-    void approveBookingAlreadyApprovedThrowsFailedBookingException() {
+    public void testApproveBookingAlreadyApprovedThrowsFailedBookingException() {
         Long bookingId = 1L;
         Long ownerId = 2L;
         Boolean isApproved = true;
@@ -266,7 +266,7 @@ class BookingServiceImplValidTest {
     }
 
     @Test
-    void approveBookingInvalidBookingThrowsResourceNotFoundException() {
+    public void testApproveBookingInvalidBookingThrowsResourceNotFoundException() {
         Long bookingId = 1L;
         Long ownerId = 2L;
         Boolean isApproved = true;

@@ -32,6 +32,6 @@ public class ItemRequest {
     private Timestamp created;
 
     @Transient
-    List<ItemInRequestProjection> items;
+    private List<ItemInRequestProjection> items;
 
 }

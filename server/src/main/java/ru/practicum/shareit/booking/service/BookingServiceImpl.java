@@ -10,10 +10,7 @@ import ru.practicum.shareit.booking.dto.BookingReceiveDto;
 import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.booking.model.Status;
 import ru.practicum.shareit.booking.storage.BookingRepository;
-import ru.practicum.shareit.exception.exceptions.FailedBookingException;
-import ru.practicum.shareit.exception.exceptions.NotOwnerException;
-import ru.practicum.shareit.exception.exceptions.ResourceNotFoundException;
-import ru.practicum.shareit.exception.exceptions.SelfBookingException;
+import ru.practicum.shareit.exception.exceptions.*;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.storage.ItemRepository;
 import ru.practicum.shareit.user.User;
@@ -74,6 +71,9 @@ public class BookingServiceImpl implements BookingService {
         }
         if (bookingToApprove.getStatus().equals(Status.APPROVED)) {
             throw new FailedBookingException("Бронирование уже подтверждено");
+        }
+        if (isApproved == null) {
+            throw new BadRequestException("Подтверждение не указано");
         }
         bookingToApprove.setStatus(isApproved ? Status.APPROVED : Status.REJECTED);
         bookingRepository.save(bookingToApprove);

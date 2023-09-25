@@ -45,7 +45,7 @@ class ItemServiceImplTest {
     private UserRepository userRepository;
 
     @Test
-    void testAddItem() {
+    public void testAddItem() {
         User user = new User();
         user.setEmail("jane.doe@example.org");
         user.setId(1L);
@@ -217,7 +217,7 @@ class ItemServiceImplTest {
     }
 
     @Test
-    void testPatchItem() {
+    public void testPatchItem() {
         User user = new User();
         user.setEmail("jane.doe@example.org");
         user.setId(1L);
@@ -428,13 +428,13 @@ class ItemServiceImplTest {
     }
 
     @Test
-    void testPatchItemResourceNotFoundException() {
+    public void testPatchItemResourceNotFoundException() {
         when(commentRepository.findByItemId((Long) any())).thenThrow(new ResourceNotFoundException("error"));
         assertThrows(ResourceNotFoundException.class, () -> itemServiceImpl.patchItem(1L, 1L, new ItemDto()));
     }
 
     @Test
-    void testGetItemById() {
+    public void testGetItemById() {
         User user = new User();
         user.setEmail("jane.doe@example.org");
         user.setId(1L);
@@ -541,13 +541,13 @@ class ItemServiceImplTest {
     }
 
     @Test
-    void testGetItemByIdResourceNotFoundException() {
+    public void testGetItemByIdResourceNotFoundException() {
         when(commentRepository.findByItemId((Long) any())).thenThrow(new ResourceNotFoundException("error"));
         assertThrows(ResourceNotFoundException.class, () -> itemServiceImpl.getItemById(1L, 1L));
     }
 
     @Test
-    void testGetAllUserItem() {
+    public void testGetAllUserItem() {
         ArrayList<Item> itemList = new ArrayList<>();
         when(itemRepository.findByOwnerId((Long) any())).thenReturn(itemList);
         when(userRepository.existsById((Long) any())).thenReturn(true);
@@ -559,7 +559,7 @@ class ItemServiceImplTest {
     }
 
     @Test
-    void testGetAllUserItemResourceNotFoundException() {
+    public void testGetAllUserItemResourceNotFoundException() {
         when(itemRepository.findByOwnerId((Long) any())).thenThrow(new ResourceNotFoundException("error"));
         when(userRepository.existsById((Long) any())).thenReturn(true);
         assertThrows(ResourceNotFoundException.class, () -> itemServiceImpl.getAllUserItem(1L));
@@ -568,7 +568,7 @@ class ItemServiceImplTest {
     }
 
     @Test
-    void testGetAllUserItemNothing() {
+    public void testGetAllUserItemNothing() {
         User user = new User();
         user.setEmail("jane.doe@example.org");
         user.setId(1L);
@@ -672,6 +672,9 @@ class ItemServiceImplTest {
 
         ArrayList<Item> itemList = new ArrayList<>();
         itemList.add(item2);
+
+        System.out.println("sample" + itemList);
+
         when(itemRepository.findByOwnerId((Long) any())).thenReturn(itemList);
         when(userRepository.existsById((Long) any())).thenReturn(true);
         when(bookingRepository.findByItemOwner((Long) any())).thenReturn(new ArrayList<>());
@@ -697,7 +700,7 @@ class ItemServiceImplTest {
     }
 
     @Test
-    void testFindByTextQuery() {
+    public void testFindByTextQuery() {
         ArrayList<Item> itemList = new ArrayList<>();
         when(itemRepository.findByNameOrDescriptionContainingIgnoreCaseAndAvailableTrue((String) any(), (String) any()))
                 .thenReturn(itemList);
@@ -709,14 +712,14 @@ class ItemServiceImplTest {
     }
 
     @Test
-    void testFindByTextQueryEmpty() {
+    public void testFindByTextQueryEmpty() {
         when(itemRepository.findByNameOrDescriptionContainingIgnoreCaseAndAvailableTrue((String) any(), (String) any()))
                 .thenReturn(new ArrayList<>());
         assertTrue(itemServiceImpl.findByTextQuery("").isEmpty());
     }
 
     @Test
-    void testFindByTextQueryResourceNotFoundException() {
+    public void testFindByTextQueryResourceNotFoundException() {
         when(itemRepository.findByNameOrDescriptionContainingIgnoreCaseAndAvailableTrue((String) any(), (String) any()))
                 .thenThrow(new ResourceNotFoundException("error"));
         assertThrows(ResourceNotFoundException.class, () -> itemServiceImpl.findByTextQuery("Query"));
@@ -725,19 +728,19 @@ class ItemServiceImplTest {
     }
 
     @Test
-    void testAddComment() {
+    public void testAddComment() {
         assertThrows(FailedCommentException.class, () -> itemServiceImpl.addComment(1L, 1L, new HashMap<>()));
     }
 
     @Test
-    void addCommentSecFailedCommentException() {
+    public void testAddCommentSecFailedCommentException() {
         when(bookingRepository.existsByItemIdAndBookerIdAndEndBefore(any(), any(), any())).thenReturn(false);
         assertThrows(FailedCommentException.class, () -> itemServiceImpl.addComment(1L,
                 1L, Map.of("text", "text")));
     }
 
     @Test
-    void addComment_ValidParameters_ReturnsComment() {
+    public void testAddCommentValidParametersReturnsComment() {
         Long requesterId = 1L;
         Long itemId = 2L;
         Map<String, String> text = new HashMap<>();
@@ -758,6 +761,8 @@ class ItemServiceImplTest {
         when(userRepository.findById(requesterId)).thenReturn(Optional.of(user));
 
         Comment result = itemServiceImpl.addComment(requesterId, itemId, text);
+
+        System.out.println("sample" + result + "example" + comment);
 
         assertNotNull(result);
         assertEquals(comment.getId(), result.getId());

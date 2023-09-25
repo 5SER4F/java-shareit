@@ -45,7 +45,7 @@ class ItemControllerTest {
     private ItemService itemService;
 
     @Test
-    void testAddItem() {
+    public void testAddItem() {
 
         User user = new User();
         user.setEmail("jane.doe@example.org");
@@ -226,7 +226,7 @@ class ItemControllerTest {
 
 
     @Test
-    void testPatchItem() {
+    public void testPatchItem() {
         User user = new User();
         user.setEmail("jane.doe@example.org");
         user.setId(1L);
@@ -502,7 +502,7 @@ class ItemControllerTest {
     }
 
     @Test
-    void testGetItemById() throws Exception {
+    public void testGetItemById() throws Exception {
         User user = new User();
         user.setEmail("jane.doe@example.org");
         user.setId(1L);
@@ -677,7 +677,7 @@ class ItemControllerTest {
     }
 
     @Test
-    void testGetAllUserItem() throws Exception {
+    public void testGetAllUserItem() throws Exception {
         when(itemService.getAllUserItem((Long) any())).thenReturn(new ArrayList<>());
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/items")
                 .header("X-Sharer-User-Id", "42");
@@ -690,7 +690,7 @@ class ItemControllerTest {
     }
 
     @Test
-    void testFindByTextQuery() throws Exception {
+    public void testFindByTextQuery() throws Exception {
         when(itemService.findByTextQuery((String) any())).thenReturn(new ArrayList<>());
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/items/search")
                 .param("text", "foo");
@@ -703,7 +703,7 @@ class ItemControllerTest {
     }
 
     @Test
-    void testFindByTextQuery2() throws Exception {
+    public void testFindByTextQuery2() throws Exception {
         User user = new User();
         user.setEmail("jane.doe@example.org");
         user.setId(1L);
@@ -797,6 +797,9 @@ class ItemControllerTest {
 
         ArrayList<Item> itemList = new ArrayList<>();
         itemList.add(item2);
+
+        System.out.println("sample = " + itemList);
+
         when(itemService.findByTextQuery((String) any())).thenReturn(itemList);
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/items/search")
                 .param("text", "foo");
@@ -814,7 +817,7 @@ class ItemControllerTest {
     }
 
     @Test
-    void testAddComment() throws Exception {
+    public void testAddComment() throws Exception {
         Timestamp timestamp = mock(Timestamp.class);
         when(timestamp.getTime()).thenReturn(10L);
 
@@ -825,6 +828,9 @@ class ItemControllerTest {
         comment.setId(1L);
         comment.setItemId(1L);
         comment.setText("Text");
+
+        System.out.println("sample = " + comment);
+
         when(itemService.addComment((Long) any(), (Long) any(), any())).thenReturn(comment);
         MockHttpServletRequestBuilder contentTypeResult = MockMvcRequestBuilders.post("/items/{itemId}/comment", 1L)
                 .header("X-Sharer-User-Id", "42")

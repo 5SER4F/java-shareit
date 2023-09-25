@@ -27,7 +27,7 @@ class UserServiceImplTest {
 
 
     @Test
-    void addUser() {
+    public void testAddUser() {
         User user = new User();
         user.setName("John");
         user.setEmail("john@example.com");
@@ -35,7 +35,7 @@ class UserServiceImplTest {
         when(userRepository.save(user)).thenReturn(user);
 
         User savedUser = userService.addUser(user);
-
+        System.out.println("sample = " + savedUser);
         assertNotNull(savedUser);
         assertEquals("John", savedUser.getName());
         assertEquals("john@example.com", savedUser.getEmail());
@@ -44,7 +44,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void getAll() {
+    public void testGetAll() {
         List<User> userList = new ArrayList<>();
         User user1 = new User();
         user1.setName("John");
@@ -58,7 +58,7 @@ class UserServiceImplTest {
         when(userRepository.findAll()).thenReturn(userList);
 
         List<User> result = userService.getAll();
-
+        System.out.println("sample = " + userList);
         assertNotNull(result);
         assertEquals(2, result.size());
         assertEquals("John", result.get(0).getName());
@@ -70,7 +70,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void getUserExistingIdShouldReturnUser() {
+    public void testGetUserExistingIdShouldReturnUser() {
         Long userId = 1L;
         User user = new User();
         user.setId(userId);
@@ -80,7 +80,7 @@ class UserServiceImplTest {
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
 
         User result = userService.getUser(userId);
-
+        System.out.println("sample = " + result);
         assertNotNull(result);
         assertEquals(userId, result.getId());
         assertEquals("John", result.getName());
@@ -90,7 +90,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void getUserNonExistingIdShouldThrowException() {
+    public void testGetUserNonExistingIdShouldThrowException() {
         Long userId = 1L;
 
         when(userRepository.findById(userId)).thenReturn(Optional.empty());
@@ -103,7 +103,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void patchUserExistingIdShouldReturnUpdatedUser() {
+    public void testPatchUserExistingIdShouldReturnUpdatedUser() {
         Long userId = 1L;
         User user = new User();
         user.setId(userId);
@@ -117,7 +117,7 @@ class UserServiceImplTest {
         when(userRepository.save(user)).thenReturn(user);
 
         User result = userService.patchUser(userId, userPatch);
-
+        System.out.println("sample = " + result);
         assertNotNull(result);
         assertEquals(userId, result.getId());
         assertEquals("Jane", result.getName());
@@ -127,10 +127,4 @@ class UserServiceImplTest {
         verify(userRepository, times(1)).save(user);
     }
 
-    @Test
-    void patchUserNonExistingIdShouldThrowException() {
-        Long userId = 1L;
-        User userPatch = new User();
-        userPatch.setName("Jane");
-    }
 }

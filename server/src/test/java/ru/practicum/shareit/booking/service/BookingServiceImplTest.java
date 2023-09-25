@@ -40,7 +40,7 @@ class BookingServiceImplTest {
     private UserRepository userRepository;
 
     @Test
-    void testPostBooking() {
+    public void testPostBooking() {
         User user = new User();
         user.setEmail("jane.doe@example.org");
         user.setId(1L);
@@ -143,7 +143,7 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void testApproveBooking() {
+    public void testApproveBooking() {
         User user = new User();
         user.setEmail("jane.doe@example.org");
         user.setId(1L);
@@ -330,7 +330,7 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void testGetBooking() {
+    public void testGetBooking() {
         User user = new User();
         user.setEmail("jane.doe@example.org");
         user.setId(1L);
@@ -409,12 +409,12 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void testGetAllByBookerWithState() {
+    public void testGetAllByBookerWithState() {
         assertThrows(FailedBookingException.class, () -> bookingServiceImpl.getAllByBookerWithState(1L, "MD", 1, 3));
     }
 
     @Test
-    void testGetAllByItemOwnerWithState() {
+    public void testGetAllByItemOwnerWithState() {
         assertThrows(FailedBookingException.class, () -> bookingServiceImpl.getAllByItemOwnerWithState(1L, "MD", 1, 3));
     }
 }

@@ -32,7 +32,7 @@ class BookingControllerTest {
     private BookingService bookingService;
 
     @Test
-    void testApproveBooking() throws Exception {
+    public void testApproveBooking() throws Exception {
         User user = new User();
         user.setEmail("jane.doe@example.org");
         user.setId(1L);
@@ -140,6 +140,9 @@ class BookingControllerTest {
         booking6.setItem(item2);
         booking6.setStart(timestamp1);
         booking6.setStatus(Status.WAITING);
+
+        System.out.println("Target = " + booking6);
+
         when(bookingService.approveBooking((Long) any(), (Long) any(), (Boolean) any())).thenReturn(booking6);
         MockHttpServletRequestBuilder patchResult = MockMvcRequestBuilders.patch("/bookings/{bookingId}", 1L);
         MockHttpServletRequestBuilder requestBuilder = patchResult.param("approved", String.valueOf(true))
@@ -162,7 +165,7 @@ class BookingControllerTest {
     }
 
     @Test
-    void testGetAllByBookerWithState() throws Exception {
+    public void testGetAllByBookerWithState() throws Exception {
         when(bookingService.getAllByBookerWithState((Long) any(), (String) any(), anyInt(), anyInt()))
                 .thenReturn(new ArrayList<>());
         MockHttpServletRequestBuilder getResult = MockMvcRequestBuilders.get("/bookings");
@@ -180,7 +183,7 @@ class BookingControllerTest {
 
 
     @Test
-    void testGetAllByItemOwnerWithState() throws Exception {
+    public void testGetAllByItemOwnerWithState() throws Exception {
         when(bookingService.getAllByItemOwnerWithState((Long) any(), (String) any(), anyInt(), anyInt()))
                 .thenReturn(new ArrayList<>());
         MockHttpServletRequestBuilder getResult = MockMvcRequestBuilders.get("/bookings/owner");

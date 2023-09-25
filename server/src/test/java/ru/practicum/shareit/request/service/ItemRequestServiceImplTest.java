@@ -38,21 +38,21 @@ class ItemRequestServiceImplTest {
     private UserRepository userRepository;
 
     @Test
-    void testAddPostFailedItemRequestException() {
+    public void testAddPostFailedItemRequestException() {
         when(userRepository.existsById((Long) any())).thenReturn(true);
         assertThrows(FailedItemRequestException.class, () -> itemRequestServiceImpl.addPost(1L, new HashMap<>()));
         verify(userRepository).existsById((Long) any());
     }
 
     @Test
-    void testAddPostResourceNotFoundException() {
+    public void testAddPostResourceNotFoundException() {
         when(userRepository.existsById((Long) any())).thenReturn(false);
         assertThrows(ResourceNotFoundException.class, () -> itemRequestServiceImpl.addPost(1L, new HashMap<>()));
         verify(userRepository).existsById((Long) any());
     }
 
     @Test
-    void testAddPostGood() {
+    public void testAddPostGood() {
         ItemRequest itemRequest = new ItemRequest();
         itemRequest.setCreated(mock(Timestamp.class));
         itemRequest.setDescription("something");
@@ -64,13 +64,16 @@ class ItemRequestServiceImplTest {
 
         HashMap<String, String> stringStringMap = new HashMap<>();
         stringStringMap.put("description", "42");
+
+        System.out.println("sample = " + itemRequest);
+
         assertSame(itemRequest, itemRequestServiceImpl.addPost(1L, stringStringMap));
         verify(itemRequestRepository).save((ItemRequest) any());
         verify(userRepository).existsById((Long) any());
     }
 
     @Test
-    void testAddPostResourceNotFoundExceptionWithValid() {
+    public void testAddPostResourceNotFoundExceptionWithValid() {
         when(itemRequestRepository.save((ItemRequest) any()))
                 .thenThrow(new ResourceNotFoundException("error"));
         when(userRepository.existsById((Long) any())).thenReturn(true);
@@ -83,7 +86,7 @@ class ItemRequestServiceImplTest {
     }
 
     @Test
-    void testGetById() {
+    public void testGetById() {
         ItemRequest itemRequest = new ItemRequest();
         itemRequest.setCreated(mock(Timestamp.class));
         itemRequest.setDescription("something");
@@ -93,6 +96,9 @@ class ItemRequestServiceImplTest {
         itemRequest.setRequesterId(1L);
 
         Optional<ItemRequest> ofResult = Optional.of(itemRequest);
+
+        System.out.println("sample = " + ofResult);
+
         when(itemRequestRepository.findById((Long) any())).thenReturn(ofResult);
         when(userRepository.existsById((Long) any())).thenReturn(true);
         when(itemRepository.findAllByRequestIdIn((Collection<Long>) any())).thenReturn(new ArrayList<>());
@@ -105,7 +111,7 @@ class ItemRequestServiceImplTest {
     }
 
     @Test
-    void testGetByIdResourceNotFoundException() {
+    public void testGetByIdResourceNotFoundException() {
         ItemRequest itemRequest = new ItemRequest();
         itemRequest.setCreated(mock(Timestamp.class));
         itemRequest.setDescription("something");
@@ -114,6 +120,7 @@ class ItemRequestServiceImplTest {
         itemRequest.setRequesterId(1L);
 
         Optional<ItemRequest> ofResult = Optional.of(itemRequest);
+
         when(itemRequestRepository.findById((Long) any())).thenReturn(ofResult);
         when(userRepository.existsById((Long) any())).thenReturn(true);
         when(itemRepository.findAllByRequestIdIn((Collection<Long>) any()))
@@ -125,7 +132,7 @@ class ItemRequestServiceImplTest {
     }
 
     @Test
-    void testGetByIdGood() {
+    public void testGetByIdGood() {
         ItemRequest itemRequest = mock(ItemRequest.class);
         doNothing().when(itemRequest).setCreated((Timestamp) any());
         doNothing().when(itemRequest).setDescription((String) any());
@@ -139,6 +146,7 @@ class ItemRequestServiceImplTest {
         itemRequest.setItems(new ArrayList<>());
         itemRequest.setRequesterId(1L);
         Optional<ItemRequest> ofResult = Optional.of(itemRequest);
+        System.out.println("example = " + ofResult + "sample = " + itemRequest);
         when(itemRequestRepository.findById((Long) any())).thenReturn(ofResult);
         when(userRepository.existsById((Long) any())).thenReturn(true);
         when(itemRepository.findAllByRequestIdIn((Collection<Long>) any())).thenReturn(new ArrayList<>());
@@ -154,12 +162,13 @@ class ItemRequestServiceImplTest {
     }
 
     @Test
-    void testGetAllUserRequests() {
+    public void testGetAllUserRequests() {
         ArrayList<ItemRequest> itemRequestList = new ArrayList<>();
         when(itemRequestRepository.findByRequesterId((Long) any())).thenReturn(itemRequestList);
         when(userRepository.existsById((Long) any())).thenReturn(true);
         when(itemRepository.findAllByRequestIdIn((Collection<Long>) any())).thenReturn(new ArrayList<>());
         List<ItemRequest> actualAllUserRequests = itemRequestServiceImpl.getAllUserRequests(1L);
+        System.out.println("example = " + itemRequestList + "sample = " + actualAllUserRequests);
         assertSame(itemRequestList, actualAllUserRequests);
         assertTrue(actualAllUserRequests.isEmpty());
         verify(itemRequestRepository).findByRequesterId((Long) any());
@@ -168,7 +177,7 @@ class ItemRequestServiceImplTest {
     }
 
     @Test
-    void testGetAllUserRequestsResourceNotFoundException() {
+    public void testGetAllUserRequestsResourceNotFoundException() {
         when(itemRequestRepository.findByRequesterId((Long) any())).thenReturn(new ArrayList<>());
         when(userRepository.existsById((Long) any())).thenReturn(true);
         when(itemRepository.findAllByRequestIdIn((Collection<Long>) any()))
@@ -180,7 +189,7 @@ class ItemRequestServiceImplTest {
     }
 
     @Test
-    void testGetAllUserRequestsAnotherList() {
+    public void testGetAllUserRequestsAnotherList() {
         ItemRequest itemRequest = new ItemRequest();
         itemRequest.setCreated(mock(Timestamp.class));
         itemRequest.setDescription("something");
@@ -194,6 +203,7 @@ class ItemRequestServiceImplTest {
         when(userRepository.existsById((Long) any())).thenReturn(true);
         when(itemRepository.findAllByRequestIdIn((Collection<Long>) any())).thenReturn(new ArrayList<>());
         List<ItemRequest> actualAllUserRequests = itemRequestServiceImpl.getAllUserRequests(1L);
+        System.out.println("example = " + itemRequestList + "sample = " + actualAllUserRequests);
         assertSame(itemRequestList, actualAllUserRequests);
         assertEquals(1, actualAllUserRequests.size());
         verify(itemRequestRepository).findByRequesterId((Long) any());
@@ -202,7 +212,7 @@ class ItemRequestServiceImplTest {
     }
 
     @Test
-    void testGetAllUserRequestsResourceNotFoundExceptionValid() {
+    public void testGetAllUserRequestsResourceNotFoundExceptionValid() {
         when(itemRequestRepository.findByRequesterId((Long) any())).thenReturn(new ArrayList<>());
         when(userRepository.existsById((Long) any())).thenReturn(false);
         when(itemRepository.findAllByRequestIdIn((Collection<Long>) any())).thenReturn(new ArrayList<>());
@@ -212,7 +222,7 @@ class ItemRequestServiceImplTest {
 
 
     @Test
-    void testGetAllPageable() {
+    public void testGetAllPageable() {
         when(itemRequestRepository.findAll((Pageable) any())).thenReturn(new PageImpl<>(new ArrayList<>()));
         when(userRepository.existsById((Long) any())).thenReturn(true);
         when(itemRepository.findAllByRequestIdIn((Collection<Long>) any())).thenReturn(new ArrayList<>());
@@ -223,7 +233,7 @@ class ItemRequestServiceImplTest {
     }
 
     @Test
-    void testGetAllPageableResourceNotFoundException() {
+    public void testGetAllPageableResourceNotFoundException() {
         when(itemRequestRepository.findAll((Pageable) any())).thenReturn(new PageImpl<>(new ArrayList<>()));
         when(userRepository.existsById((Long) any())).thenReturn(true);
         when(itemRepository.findAllByRequestIdIn((Collection<Long>) any()))
@@ -235,7 +245,7 @@ class ItemRequestServiceImplTest {
     }
 
     @Test
-    void testGetAllPageableResourceNotFoundExceptionValid() {
+    public void testGetAllPageableResourceNotFoundExceptionValid() {
         when(itemRequestRepository.findAll((Pageable) any())).thenReturn(new PageImpl<>(new ArrayList<>()));
         when(userRepository.existsById((Long) any())).thenReturn(false);
         when(itemRepository.findAllByRequestIdIn((Collection<Long>) any())).thenReturn(new ArrayList<>());
@@ -244,7 +254,7 @@ class ItemRequestServiceImplTest {
     }
 
     @Test
-    void testGetAllPageableEmpty() {
+    public void testGetAllPageableEmpty() {
         when(itemRequestRepository.findAll((Pageable) any())).thenReturn(new PageImpl<>(new ArrayList<>()));
         when(userRepository.existsById((Long) any())).thenReturn(true);
         when(itemRepository.findAllByRequestIdIn((Collection<Long>) any())).thenReturn(new ArrayList<>());

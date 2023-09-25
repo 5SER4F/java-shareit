@@ -26,7 +26,7 @@ class UserControllerTest {
     private UserController userController;
 
     @Test
-    void addUser() {
+    public void testAddUser() {
         User user = new User();
         user.setName("John");
         user.setEmail("john@example.com");
@@ -34,6 +34,8 @@ class UserControllerTest {
         when(userService.addUser(user)).thenReturn(user);
 
         ResponseEntity<User> response = userController.addUser(user);
+
+        System.out.println("example = " + response);
 
         assertNotNull(response);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
@@ -43,7 +45,7 @@ class UserControllerTest {
     }
 
     @Test
-    void getUser() {
+    public void testGetUser() {
         Long userId = 1L;
         User user = new User();
         user.setId(userId);
@@ -54,6 +56,8 @@ class UserControllerTest {
 
         ResponseEntity<User> response = userController.getUser(userId);
 
+        System.out.println("example = " + response);
+
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(user, response.getBody());
@@ -62,7 +66,7 @@ class UserControllerTest {
     }
 
     @Test
-    void getAll() {
+    public void testGetAll() {
         List<User> userList = new ArrayList<>();
         User user1 = new User();
         user1.setName("John");
@@ -77,6 +81,8 @@ class UserControllerTest {
 
         ResponseEntity<List<User>> response = userController.getAll();
 
+        System.out.println("example = " + response);
+
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(userList, response.getBody());
@@ -85,7 +91,7 @@ class UserControllerTest {
     }
 
     @Test
-    void patchUser() {
+    public void testPatchUser() {
         Long userId = 1L;
         User user = new User();
         user.setId(userId);
@@ -96,6 +102,8 @@ class UserControllerTest {
 
         ResponseEntity<User> response = userController.patchUser(userId, user);
 
+        System.out.println("sample = " + response);
+
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(user, response.getBody());
@@ -104,7 +112,7 @@ class UserControllerTest {
     }
 
     @Test
-    void deleteUser() {
+    public void testDeleteUser() {
         Long userId = 1L;
 
         HttpStatus response = userController.deleteUser(userId);

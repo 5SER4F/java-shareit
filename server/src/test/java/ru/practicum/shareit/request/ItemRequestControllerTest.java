@@ -32,7 +32,7 @@ class ItemRequestControllerTest {
     private ItemRequestService itemRequestService;
 
     @Test
-    void testGetAllPageable() throws Exception {
+    public void testGetAllPageable() throws Exception {
         when(itemRequestService.getAllPageable((Long) any(), anyInt(), anyInt())).thenReturn(new ArrayList<>());
         MockHttpServletRequestBuilder getResult = MockMvcRequestBuilders.get("/requests/all");
         MockHttpServletRequestBuilder paramResult = getResult.param("from", String.valueOf(1));
@@ -47,7 +47,7 @@ class ItemRequestControllerTest {
     }
 
     @Test
-    void testGetAllPageableDateTime() throws Exception {
+    public void testGetAllPageableDateTime() throws Exception {
         Timestamp timestamp = mock(Timestamp.class);
         when(timestamp.toLocalDateTime()).thenReturn(LocalDateTime.of(1, 1, 1, 1,
                 1));
@@ -62,6 +62,7 @@ class ItemRequestControllerTest {
         ArrayList<ItemRequest> itemRequestList = new ArrayList<>();
         itemRequestList.add(itemRequest);
         when(itemRequestService.getAllPageable((Long) any(), anyInt(), anyInt())).thenReturn(itemRequestList);
+        System.out.println("sample = " + itemRequestList);
         MockHttpServletRequestBuilder getResult = MockMvcRequestBuilders.get("/requests/all");
         MockHttpServletRequestBuilder paramResult = getResult.param("from", String.valueOf(1));
         MockHttpServletRequestBuilder requestBuilder = paramResult.param("size", String.valueOf(1))
@@ -80,7 +81,7 @@ class ItemRequestControllerTest {
     }
 
     @Test
-    void testGetAllPageableManyObj() throws Exception {
+    public void testGetAllPageableManyObj() throws Exception {
         Timestamp timestamp = mock(Timestamp.class);
         when(timestamp.toLocalDateTime()).thenReturn(LocalDateTime.of(1, 1, 1, 1,
                 1));
@@ -106,6 +107,7 @@ class ItemRequestControllerTest {
         itemRequestList.add(itemRequest1);
         itemRequestList.add(itemRequest);
         when(itemRequestService.getAllPageable((Long) any(), anyInt(), anyInt())).thenReturn(itemRequestList);
+        System.out.println("sample = " + itemRequestList);
         MockHttpServletRequestBuilder getResult = MockMvcRequestBuilders.get("/requests/all");
         MockHttpServletRequestBuilder paramResult = getResult.param("from", String.valueOf(1));
         MockHttpServletRequestBuilder requestBuilder = paramResult.param("size", String.valueOf(1))
@@ -124,7 +126,7 @@ class ItemRequestControllerTest {
     }
 
     @Test
-    void testGetRequestById() throws Exception {
+    public void testGetRequestById() throws Exception {
         Timestamp timestamp = mock(Timestamp.class);
         when(timestamp.toLocalDateTime()).thenReturn(LocalDateTime.of(1, 1, 1, 1,
                 1));
@@ -136,6 +138,7 @@ class ItemRequestControllerTest {
         itemRequest.setItems(new ArrayList<>());
         itemRequest.setRequesterId(1L);
         when(itemRequestService.getById((Long) any(), (Long) any())).thenReturn(itemRequest);
+        System.out.println("sample = " + itemRequest);
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/requests/{requestId}",
                         1L)
                 .header("X-Sharer-User-Id", "42");
@@ -152,7 +155,7 @@ class ItemRequestControllerTest {
     }
 
     @Test
-    void testGetUserRequests() throws Exception {
+    public void testGetUserRequests() throws Exception {
         when(itemRequestService.getAllUserRequests((Long) any())).thenReturn(new ArrayList<>());
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/requests")
                 .header("X-Sharer-User-Id", "42");
@@ -165,7 +168,7 @@ class ItemRequestControllerTest {
     }
 
     @Test
-    void testGetUserRequestsManyObj() throws Exception {
+    public void testGetUserRequestsManyObj() throws Exception {
         Timestamp timestamp = mock(Timestamp.class);
         when(timestamp.toLocalDateTime()).thenReturn(LocalDateTime.of(1, 1, 1, 1,
                 1));
@@ -180,6 +183,7 @@ class ItemRequestControllerTest {
         ArrayList<ItemRequest> itemRequestList = new ArrayList<>();
         itemRequestList.add(itemRequest);
         when(itemRequestService.getAllUserRequests((Long) any())).thenReturn(itemRequestList);
+        System.out.println("sample = " + itemRequestList);
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/requests")
                 .header("X-Sharer-User-Id", "42");
         MockMvcBuilders.standaloneSetup(itemRequestController)
@@ -195,7 +199,7 @@ class ItemRequestControllerTest {
     }
 
     @Test
-    void testGetUserRequests3Obj() throws Exception {
+    public void testGetUserRequests3Obj() throws Exception {
         Timestamp timestamp = mock(Timestamp.class);
         when(timestamp.toLocalDateTime()).thenReturn(LocalDateTime.of(1, 1, 1, 1,
                 1));
@@ -221,6 +225,7 @@ class ItemRequestControllerTest {
         itemRequestList.add(itemRequest1);
         itemRequestList.add(itemRequest);
         when(itemRequestService.getAllUserRequests((Long) any())).thenReturn(itemRequestList);
+        System.out.println("sample = " + itemRequestList);
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/requests")
                 .header("X-Sharer-User-Id", "42");
         MockMvcBuilders.standaloneSetup(itemRequestController)
@@ -238,7 +243,7 @@ class ItemRequestControllerTest {
     }
 
     @Test
-    void testPostRequestEmpty() throws Exception {
+    public void testPostRequestEmpty() throws Exception {
         when(itemRequestService.getAllUserRequests((Long) any())).thenReturn(new ArrayList<>());
         MockHttpServletRequestBuilder contentTypeResult = MockMvcRequestBuilders.get("/requests")
                 .header("X-Sharer-User-Id", "42")
@@ -256,7 +261,7 @@ class ItemRequestControllerTest {
     }
 
     @Test
-    void testPostRequestWithObj() throws Exception {
+    public void testPostRequestWithObj() throws Exception {
         Timestamp timestamp = mock(Timestamp.class);
         when(timestamp.toLocalDateTime()).thenReturn(LocalDateTime.of(1, 1, 1, 1,
                 1));
@@ -271,6 +276,7 @@ class ItemRequestControllerTest {
         ArrayList<ItemRequest> itemRequestList = new ArrayList<>();
         itemRequestList.add(itemRequest);
         when(itemRequestService.getAllUserRequests((Long) any())).thenReturn(itemRequestList);
+        System.out.println("sample = " + itemRequestList);
         MockHttpServletRequestBuilder contentTypeResult = MockMvcRequestBuilders.get("/requests")
                 .header("X-Sharer-User-Id", "42")
                 .contentType(MediaType.APPLICATION_JSON);
